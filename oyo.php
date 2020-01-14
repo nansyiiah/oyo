@@ -403,8 +403,8 @@ function generateRandomString($length = 10) {
     }
     return $randomString;
 }
-
-echo 'Enter Phone Number : '; 
+ulang:
+echo "\nEnter Phone Number : "; 
 $phone_number = trim(fgets(STDIN)); 
 
 $ch = curl_init();
@@ -428,13 +428,14 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $result = curl_exec($ch);
 if (curl_errno($ch)) {
     echo 'Error:' . curl_error($ch);
+	goto ulang;
 }
 curl_close ($ch);
 
 $json = json_decode($result);
 if($json->is_user_present == 1){
 	echo "Nomor sudah terdaftar";
-	die();
+	goto ulang;
 }
 echo 'Enter OTP : '; 
 $otp = trim(fgets(STDIN)); 
@@ -478,6 +479,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $result = curl_exec($ch);
 if (curl_errno($ch)) {
     echo 'Error:' . curl_error($ch);
+	goto ulang;
 }
 curl_close ($ch);
 
@@ -485,7 +487,7 @@ $json = json_decode($result);
 
 if($json->success == 0){
 	echo $json->error->message;
-	die();
+	goto ulang;
 }
 
 echo $json->phone." Berhasil mendaftar OYO";
